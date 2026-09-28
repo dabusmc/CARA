@@ -36,6 +36,7 @@ function hasValue (tab, val)
 end
 ----------------------------------------------------------------------
 
+VERSION = "0.0.4a"
 BASE_URL = "https://raw.githubusercontent.com/dabusmc/CARA/refs/heads/main/"
 
 function download(path, destination)
@@ -109,6 +110,8 @@ function downloadManifest(manifest, manifest_path, strip_top_path)
 end
 
 function main(...)
+    print("Cara Initializer Version " .. VERSION)
+
     -- Gather inputted args
     local args = { ... }
     
