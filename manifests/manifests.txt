@@ -1,2 +1,3 @@
 base.txt
 interaction.txt
+generic.txt
