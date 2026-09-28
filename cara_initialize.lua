@@ -120,6 +120,8 @@ function main(...)
 
     local instance_manifest_filepath = "/manifests/" .. instance .. ".txt"
 
+    print("Downloading files for instance " .. instance .. "...")
+
     -- Gather instance files
     local instance_files = readFileToTable(instance_manifest_filepath)
     if instance_files == nil then
@@ -139,10 +141,13 @@ function main(...)
         end
 
         -- Download the file
+        print("Downloading " .. file_path .. "...")
         if not download(instance_file_path, "/" .. file_path) then
             return
         end
     end
+
+    print("Downloaded files for instance " .. instance .. ".")
 
     -- Cleanup installer-only state
     fs.delete("/manifests")
