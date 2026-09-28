@@ -25,11 +25,37 @@ local screens = {
 local network = {
     interaction_agent = nil
 }
+
+function acquireClients()
+    local agentResponses = {
+        interaction_agent_acquired = "interaction_agent"
+    }
+    local acquisition_rounds = 4
+    local acquisition_timeout = 1
+    
+    for _ = 1, acquisition_rounds do
+        rednet.broadcast("acquire_clients", "cara_send")
+
+        while true do
+            local senderID, message, protocol = rednet.receive("cara_receive", acquisition_timeout)
+
+            if senderID == nil then
+                break
+            end
+
+            local networkField = agentResponses[message]
+
+            if networkField then
+                network[networkField] = senderID
+            end
+        end
+    end
+end
  
 function main()
     -- Init Network
     rednet.open("top")
-    rednet.broadcast("acquire_clients", "cara_send")
+    acquireClients()
  
     -- Init UI
     ui.setTarget(MONITOR)

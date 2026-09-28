@@ -5,8 +5,25 @@ local screenManager = require "basil_screen_manager"
 local screens = {
     require("screens.cara_startup_screen")
 }
+
+CARA_MAIN_ID = -1
  
 function main()
+    -- Init network
+    rednet.open("bottom")
+    while true do
+        local senderID, message, protocol = rednet.receive("cara_send", 1)
+
+        if senderID ~= nil then
+            if message == "acquire_clients" then
+                CARA_MAIN_ID = senderID
+                rednet.send(senderID, "interaction_agent_acquired", "cara_receive")
+                break
+            end
+        end
+    end
+
+    -- Init UI
     for _, screen in ipairs(screens) do
         screenManager.append(screen)
     end
