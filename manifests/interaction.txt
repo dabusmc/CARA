@@ -1,2 +1,3 @@
 interaction/screens/cara_startup_screen.lua
+interaction/screens/cara_resources_screen.lua
 interaction/cara_main.lua

@@ -34,6 +34,10 @@ function StartupScreen.key(key)
         ui.invalidate()
     elseif key == keys.enter then
         if StartupScreen.selectedButton == 1 then
+            return {
+                type = "switch",
+                screen = "next"
+            }
         elseif StartupScreen.selectedButton == 2 then
             return {
                 type = "quit"
