@@ -7,13 +7,14 @@ local ui = require "basil_ui"
 local screenManager = require "basil_screen_manager"
  
 function startupSequence()
-    local opening_text, err = readFileToTable("/cara_src/cara_opening_text.txt")
+    local opening_text, err = readFileToTable("/cara_opening_text.txt")
     if not opening_text then
         mon_ClearAndPrint(err, 1)
-        return
+        return false
     end
  
     mon_PrintScrollingTextFromBottom(opening_text, 0.01)
+    return true
 end
  
 local screens = {
@@ -34,7 +35,11 @@ function main()
     ui.setTarget(MONITOR)
     ui.setTextScale(1)
  
-    startupSequence()
+    if not startupSequence() then
+        rednet.close()
+        return
+    end
+
     sleep(0.5)
     MONITOR.clear()
  
@@ -85,6 +90,8 @@ function main()
     term.setTextColor(colors.white)
     term.clear()
     term.setCursorPos(1, 1)
+
+    rednet.close()
 end
  
 main()
