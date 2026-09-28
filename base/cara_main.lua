@@ -53,10 +53,6 @@ function acquireClients()
 end
  
 function main()
-    -- Init Network
-    rednet.open("top")
-    acquireClients()
- 
     -- Init UI
     ui.setTarget(MONITOR)
     ui.setTextScale(1)
@@ -72,6 +68,11 @@ function main()
     ui.resetStyle()
     ui.setTextScale(1.5)
  
+    -- Init Network
+    rednet.open("top")
+    acquireClients()
+
+    -- Prepare Screens
     for _, screen in ipairs(screens) do
         screen["network"] = network
         screenManager.append(screen)
