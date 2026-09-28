@@ -54,10 +54,13 @@ function main()
                 elseif action.type == "switch" then
                     if action.screen == "next" then
                         screenManager.next()
+                        ui.invalidate()
                     elseif action.screen == "prev" then
                         screenManager.prev()
+                        ui.invalidate()
                     elseif type(action.screen) == "number" then
                         screenManager.switchTo(action.screen)
+                        ui.invalidate()
                     end
                 end
             end
