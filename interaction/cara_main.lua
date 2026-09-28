@@ -3,7 +3,7 @@ local ui = require "basil_ui"
 local screenManager = require "basil_screen_manager"
  
 local screens = {
-    require("screens.startup_screen")
+    require("screens.cara_startup_screen")
 }
  
 function main()
