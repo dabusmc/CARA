@@ -86,7 +86,7 @@ function main(...)
     -- Cleanup existing root
     local files = fs.list("/")
     for _, file in ipairs(files) do
-        if file ~= "rom" and file ~= "update" then
+        if file ~= "rom" and file ~= "update" and file ~= "cara_initialize" then
             fs.delete("/" .. file)
         end
     end
