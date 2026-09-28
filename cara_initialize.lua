@@ -64,6 +64,9 @@ function download(path, destination)
     file.close()
 
     response.close()
+
+    print("Downloading: " .. path)
+
     return true
 end
 
