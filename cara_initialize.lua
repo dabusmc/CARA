@@ -39,7 +39,7 @@ end
 BASE_URL = "https://raw.githubusercontent.com/dabusmc/CARA/refs/heads/main/"
 
 function download(path, destination)
-    local final_path = BASE_URL .. path
+    local final_path = BASE_URL .. path .. "?cache_bust=" .. os.epoch("utc")
 
     local allowed, reason = http.checkURL(final_path)
     if not allowed then
@@ -72,6 +72,39 @@ function createDirIfNotExist(dir)
     if not exists then
         fs.makeDir(dir)
     end
+end
+
+function downloadManifest(manifest, manifest_path, strip_top_path)
+    local manifest_files = readFileToTable(manifest_path)
+    if manifest_files == nil then
+        return
+    end
+
+    for i, manifest_file_path in ipairs(manifest_files) do
+        -- Strip manifest folder name
+        local manifest_folder
+        if strip_top_path then
+            local position = string.find(manifest_file_path, "/")
+            manifest_folder = string.sub(manifest_file_path, 1, position)
+        else
+            manifest_folder = manifest .. "/"
+        end
+        local file_path = manifest_file_path:gsub(manifest_folder, "")
+
+        -- Determine if the file is in a subfolder
+        if string.find(file_path, "/") then
+            local directory = file_path:match("(.+)/[^/]+$")
+            createDirIfNotExist("/" .. directory)
+        end
+
+        -- Download the file
+        print("Downloading " .. file_path .. "...")
+        if not download(manifest_file_path, "/" .. file_path) then
+            return false
+        end
+    end
+
+    return true
 end
 
 function main(...)
@@ -111,42 +144,27 @@ function main(...)
 
     print("Downloaded Manifests.")
 
+    -- Download generic files
+    print("Downloading generic files...")
+    if not downloadManifest("generic", "/manifests/generic.txt", true) then
+        return
+    end
+    print("Downloaded generic files.")
+
     -- Determine instance manifest
     local instance = args[1]
-    if not hasValue(known_manifests, instance .. ".txt") then
+    if not hasValue(known_manifests, instance .. ".txt") or instance == "generic" then
         print("Instance " .. instance .. " is not recognised.")
         return
     end
 
     local instance_manifest_filepath = "/manifests/" .. instance .. ".txt"
 
+    -- Download instance files
     print("Downloading files for instance " .. instance .. "...")
-
-    -- Gather instance files
-    local instance_files = readFileToTable(instance_manifest_filepath)
-    if instance_files == nil then
+    if not downloadManifest(instance, instance_manifest_filepath, false) then
         return
     end
-
-    -- Download instance files
-    for i, instance_file_path in ipairs(instance_files) do
-        -- Strip instance folder name
-        local instance_folder = instance .. "/"
-        local file_path = instance_file_path:gsub(instance_folder, "")
-
-        -- Determine if the file is in a subfolder
-        if string.find(file_path, "/") then
-            local directory = file_path:match("(.+)/[^/]+$")
-            createDirIfNotExist("/" .. directory)
-        end
-
-        -- Download the file
-        print("Downloading " .. file_path .. "...")
-        if not download(instance_file_path, "/" .. file_path) then
-            return
-        end
-    end
-
     print("Downloaded files for instance " .. instance .. ".")
 
     -- Cleanup installer-only state
