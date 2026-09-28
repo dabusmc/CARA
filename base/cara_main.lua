@@ -3,8 +3,8 @@
 require "cara_generic_api"
 require "cara_monitor_api"
  
-local ui = require "cara_ui"
-local screenManager = require "cara_screen_manager"
+local ui = require "basil_ui"
+local screenManager = require "basil_screen_manager"
  
 function startupSequence()
     local opening_text, err = readFileToTable("/cara_src/cara_opening_text.txt")
