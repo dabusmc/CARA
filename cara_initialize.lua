@@ -36,7 +36,7 @@ function hasValue (tab, val)
 end
 ----------------------------------------------------------------------
 
-BASE_URL = "https://raw.githubusercontent.com/dabusmc/CARA/main/"
+BASE_URL = "https://raw.githubusercontent.com/dabusmc/CARA/refs/heads/main/"
 
 function download(path, destination)
     local final_path = BASE_URL .. path
@@ -86,7 +86,7 @@ function main(...)
     -- Cleanup existing root
     local files = fs.list("/")
     for _, file in ipairs(files) do
-        if file ~= "rom" and file ~= "update" and file ~= "cara_initialize" then
+        if file ~= "rom" and file ~= "update" and file ~= "cara_initialize.lua" then
             fs.delete("/" .. file)
         end
     end
