@@ -12,6 +12,7 @@ CARA_MAIN_ID = -1
 function main()
     -- Init network
     rednet.open("bottom")
+    print("Attempting connection to CARA...")
     while true do
         local senderID, message, protocol = rednet.receive("cara_send", 1)
 
@@ -23,6 +24,7 @@ function main()
             end
         end
     end
+    print("Connected to CARA.")
 
     -- Init UI
     for _, screen in ipairs(screens) do
@@ -55,13 +57,19 @@ function main()
                     if action.screen == "next" then
                         screenManager.next()
                         ui.invalidate()
+                        rednet.send(CARA_MAIN_ID, "switchto_1", "cara_receive")
                     elseif action.screen == "prev" then
                         screenManager.prev()
                         ui.invalidate()
+                        rednet.send(CARA_MAIN_ID, "switchto_1", "cara_receive")
                     elseif type(action.screen) == "number" then
                         screenManager.switchTo(action.screen)
                         ui.invalidate()
+                        rednet.send(CARA_MAIN_ID, "switchto_1", "cara_receive")
                     end
+                elseif action.type == "network" then
+                    local msg = action.msg
+                    rednet.send(CARA_MAIN_ID, msg, "cara_receive")
                 end
             end
         end

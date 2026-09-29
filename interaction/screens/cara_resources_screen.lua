@@ -33,6 +33,10 @@ function ResourcesScreen.key(key)
         ui.invalidate()
     elseif key == keys.enter then
         if ResourcesScreen.selectedButton == 1 then
+            return {
+                type = "network",
+                msg = "switchto_2"
+            }
         elseif ResourcesScreen.selectedButton == 2 then
             return {
                 type = "switch",

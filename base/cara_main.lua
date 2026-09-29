@@ -51,6 +51,23 @@ function acquireClients()
         end
     end
 end
+
+function processNetworkMessage(sender, message)
+    if sender == network.interaction_agent then
+        if string.find(message, "switchto") then
+            local position = string.find(message, "_")
+            if position ~= nil then
+                local scene = string.sub(message, position, #message)
+                if string.match(scene, "^%d+$") ~= nil then
+                    print("Switching to Scene " .. scene)
+                    screenManager.switchTo(tonumber(scene))
+                else
+                    print("Can't switch to Scene " .. scene)
+                end
+            end
+        end
+    end
+end
  
 function main()
     -- Init UI
@@ -79,17 +96,20 @@ function main()
     end
  
     while true do
+        -- Get the current screen
         local current = screenManager.current()
         if current == nil then
             break
         end
         
+        -- Redraw UI if necessary
         if ui.isDirty() then
             ui.clear()
             current.draw(ui)
             ui.validate()
         end
  
+        -- Process Events
         local event = { os.pullEvent() }
  
         if event[1] == "key" then
@@ -113,6 +133,12 @@ function main()
                     end
                 end
             end
+        end
+
+        -- Handle Network Messages
+        local senderID, message, protocol = rednet.receive("cara_receive", 0.5)
+        if senderID ~= nil then
+            processNetworkMessage(senderID, message)
         end
     end
  
