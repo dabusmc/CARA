@@ -2,3 +2,4 @@ base/screens/cara_power_screen.lua
 base/screens/cara_primary_screen.lua
 base/cara_main.lua
 base/cara_opening_text.txt
+base/startup.lua
