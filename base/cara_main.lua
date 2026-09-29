@@ -61,6 +61,7 @@ function processNetworkMessage(sender, message)
                 if string.match(scene, "^%d+$") ~= nil then
                     print("Switching to Scene " .. scene)
                     screenManager.switchTo(tonumber(scene))
+                    ui.invalidate()
                 else
                     print("Can't switch to Scene " .. scene)
                 end

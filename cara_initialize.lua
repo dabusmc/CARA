@@ -36,7 +36,7 @@ function hasValue (tab, val)
 end
 ----------------------------------------------------------------------
 
-VERSION = "0.0.8b"
+VERSION = "0.0.8c"
 BASE_URL = "https://raw.githubusercontent.com/dabusmc/CARA/refs/heads/main/"
 
 function download(path, destination)
