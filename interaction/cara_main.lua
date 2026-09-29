@@ -52,6 +52,7 @@ function main()
                 if action.type == "quit" then
                     break
                 elseif action.type == "close" then
+                    rednet.close()
                     os.shutdown()
                 elseif action.type == "switch" then
                     if action.screen == "next" then
@@ -79,6 +80,8 @@ function main()
     term.setTextColor(colors.white)
     term.clear()
     term.setCursorPos(1, 1)
+
+    rednet.close()
 end
  
 main()
