@@ -57,7 +57,7 @@ function processNetworkMessage(sender, message)
         if string.find(message, "switchto") then
             local position = string.find(message, "_")
             if position ~= nil then
-                local scene = string.sub(message, position, #message)
+                local scene = string.sub(message, position + 1, #message)
                 if string.match(scene, "^%d+$") ~= nil then
                     print("Switching to Scene " .. scene)
                     screenManager.switchTo(tonumber(scene))
