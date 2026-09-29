@@ -23,12 +23,14 @@ local screens = {
 }
  
 local network = {
-    interaction_agent = nil
+    interaction_agent = nil,
+    battery_agent = nil
 }
 
 function acquireClients()
     local agentResponses = {
-        interaction_agent_acquired = "interaction_agent"
+        interaction_agent_acquired = "interaction_agent",
+        battery_agent_acquired = "battery_agent"
     }
     local acquisition_rounds = 4
     local acquisition_timeout = 1
@@ -47,6 +49,7 @@ function acquireClients()
 
             if networkField then
                 network[networkField] = senderID
+                print("Acquired " .. networkField)
             end
         end
     end
