@@ -1,3 +1,4 @@
 base.txt
 interaction.txt
 generic.txt
+battery.txt
